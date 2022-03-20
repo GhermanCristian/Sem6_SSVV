@@ -107,6 +107,12 @@ public class TestAddStudent {
     }
 
     @Test
+    void TestAddStudent_DigitInStudentEmailDomain_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, "aa@yahoo1.com");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
     void TestAddStudent_NoAtSymbolInStudentEmail_ThrowsValidationException() {
         Student newStudent = new Student("1111", "aa", 999, "aayahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
