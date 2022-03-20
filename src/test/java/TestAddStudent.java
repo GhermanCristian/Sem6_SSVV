@@ -21,10 +21,11 @@ public class TestAddStudent {
     static void createXML() {
         File xml = new File("fisiere/studentiTest.xml");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(xml))) {
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n" +
-                    "<inbox>\n" +
-                    "\n" +
-                    "</inbox>");
+            writer.write("""
+                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+                    <inbox>
+
+                    </inbox>""");
             writer.flush();
         }
         catch (IOException e) {
@@ -54,6 +55,42 @@ public class TestAddStudent {
     @Test
     void TestAddStudent_InvalidStudentGroup_ThrowsValidationException() {
         Student newStudent = new Student("1111", "a", -5, "aa");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_EmptyStudentName_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "", 999, "aa");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_NullStudentName_ThrowsValidationException() {
+        Student newStudent = new Student("1111", null, 999, "aa");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_EmptyStudentID_ThrowsValidationException() {
+        Student newStudent = new Student("", "aa", 999, "aa");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_NullStudentID_ThrowsValidationException() {
+        Student newStudent = new Student(null, "aa", 999, "aa");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_EmptyStudentEmail_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, "");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_NullStudentEmail_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, null);
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 }
