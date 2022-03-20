@@ -24,7 +24,10 @@ public class StudentValidator implements Validator<Student> {
         if(entity.getNume().equals("")){
             throw new ValidationException("Nume incorect!");
         }
-        if(entity.getGrupa() < 0) {
+        if(!Pattern.compile("[a-zA-Z]+ [a-zA-Z]+").matcher(entity.getNume()).matches()) {
+            throw new ValidationException("Nume incorect!");
+        }
+        if(entity.getGrupa() < 0 || entity.getGrupa() > 999) {
             throw new ValidationException("Grupa incorecta!");
         }
         if(entity.getEmail() == null){
