@@ -47,38 +47,38 @@ public class TestAddStudent {
 
     @Test
     void TestAddStudent_ValidStudent_StudentAddedCorrectly() {
-        Student newStudent = new Student("1111", "a", 999, "aa");
+        Student newStudent = new Student("1111", "a", 999, "aa@yahoo.com");
         this.service.addStudent(newStudent);
         assertEquals(this.service.getAllStudenti().iterator().next(), newStudent);
     }
 
     @Test
     void TestAddStudent_InvalidStudentGroup_ThrowsValidationException() {
-        Student newStudent = new Student("1111", "a", -5, "aa");
+        Student newStudent = new Student("1111", "a", -5, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 
     @Test
     void TestAddStudent_EmptyStudentName_ThrowsValidationException() {
-        Student newStudent = new Student("1111", "", 999, "aa");
+        Student newStudent = new Student("1111", "", 999, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 
     @Test
     void TestAddStudent_NullStudentName_ThrowsValidationException() {
-        Student newStudent = new Student("1111", null, 999, "aa");
+        Student newStudent = new Student("1111", null, 999, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 
     @Test
     void TestAddStudent_EmptyStudentID_ThrowsValidationException() {
-        Student newStudent = new Student("", "aa", 999, "aa");
+        Student newStudent = new Student("", "aa", 999, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 
     @Test
     void TestAddStudent_NullStudentID_ThrowsValidationException() {
-        Student newStudent = new Student(null, "aa", 999, "aa");
+        Student newStudent = new Student(null, "aa", 999, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 
@@ -91,6 +91,24 @@ public class TestAddStudent {
     @Test
     void TestAddStudent_NullStudentEmail_ThrowsValidationException() {
         Student newStudent = new Student("1111", "aa", 999, null);
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_WrongStudentEmailLocalPart_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, "@yahoo.com");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_WrongStudentEmailDomain_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, "aa@yahoo.con");
+        assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
+    }
+
+    @Test
+    void TestAddStudent_NoAtSymbolInStudentEmail_ThrowsValidationException() {
+        Student newStudent = new Student("1111", "aa", 999, "aayahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
 }
