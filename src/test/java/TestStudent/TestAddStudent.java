@@ -1,3 +1,5 @@
+package TestStudent;
+
 import domain.Student;
 import org.junit.jupiter.api.*;
 import repository.StudentXMLRepo;
@@ -46,14 +48,14 @@ public class TestAddStudent {
     }
 
     @Test
-    void TestAddStudent_ValidStudent_StudentAddedCorrectly() {
+    public void TestAddStudent_ValidStudent_StudentAddedCorrectly() {
         Student newStudent = new Student("1111", "a b", 999, "aa@yahoo.com");
         this.service.addStudent(newStudent);
         assertEquals(this.service.getAllStudenti().iterator().next(), newStudent);
     }
 
     @Test
-    void TestAddStudent_NegativeStudentGroup_ThrowsValidationException() {
+    public void TestAddStudent_NegativeStudentGroup_ThrowsValidationException() {
         Student newStudent = new Student("1111", "a b", -5, "aa@yahoo.com");
         assertThrows(ValidationException.class, () -> this.service.addStudent(newStudent));
     }
