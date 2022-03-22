@@ -1,3 +1,5 @@
+package TestAssignment;
+
 import domain.Tema;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
