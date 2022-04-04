@@ -17,18 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestAddAssignment {
-    private TemaXMLRepo temaXMLRepo;
-    private TemaValidator temaValidator;
     private Service service;
 
     @BeforeAll
     static void createXML() {
         File xml = new File("fisiere/assignmentTest.xml");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(xml))) {
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"+
-                    "<inbox>"+
-
-                    "</inbox>");
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" + "<inbox>" + "</inbox>");
             writer.flush();
         }
         catch (IOException e) {
@@ -38,9 +33,7 @@ public class TestAddAssignment {
 
     @BeforeEach
     void setup() {
-        this.temaXMLRepo = new TemaXMLRepo("fisiere/assignmentTest.xml");
-        this.temaValidator = new TemaValidator();
-        this.service = new Service(null, null,this.temaXMLRepo, this.temaValidator, null, null);
+        this.service = new Service(null, null, new TemaXMLRepo("fisiere/assignmentTest.xml"), new TemaValidator(), null, null);
     }
 
     @AfterAll
@@ -57,25 +50,25 @@ public class TestAddAssignment {
 
     @Test
     void TestAddAssignment_EmptyID_ThrowsValidationException() {
-        Tema newTema = new Tema("", "a", 0, 1);
+        Tema newTema = new Tema("", "a", 1, 1);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 
     @Test
     void TestAddAssignment_NullID_ThrowsValidationException() {
-        Tema newTema = new Tema(null, "a", 0, 1);
+        Tema newTema = new Tema(null, "a", 1, 1);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 
     @Test
     void TestAddAssignment_EmptyDescription_ThrowsValidationException() {
-        Tema newTema = new Tema("1", "", 0, 1);
+        Tema newTema = new Tema("1", "", 1, 1);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 
     @Test
     void TestAddAssignment_NullDescription_ThrowsValidationException() {
-        Tema newTema = new Tema("1", null, 0, 1);
+        Tema newTema = new Tema("1", null, 1, 1);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 
@@ -87,13 +80,19 @@ public class TestAddAssignment {
 
     @Test
     void TestAddAssignment_ReceivedTooSmall_ThrowsValidationException() {
-        Tema newTema = new Tema("1", "a", 0, 0);
+        Tema newTema = new Tema("1", "a", 1, 0);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 
     @Test
     void TestAddAssignment_ReceivedTooLarge_ThrowsValidationException() {
         Tema newTema = new Tema("1", "a", 0, 15);
+        assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
+    }
+
+    @Test
+    void TestAddAssignment_ReceivedLargerThanDeadline_ThrowsValidationException() {
+        Tema newTema = new Tema("1", "a", 5, 6);
         assertThrows(ValidationException.class, () -> this.service.addTema(newTema));
     }
 }
