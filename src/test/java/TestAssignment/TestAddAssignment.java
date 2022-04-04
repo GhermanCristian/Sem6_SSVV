@@ -25,11 +25,10 @@ public class TestAddAssignment {
     static void createXML() {
         File xml = new File("fisiere/assignmentTest.xml");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(xml))) {
-            writer.write("""
-                    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-                    <inbox>
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"+
+                    "<inbox>"+
 
-                    </inbox>""");
+                    "</inbox>");
             writer.flush();
         }
         catch (IOException e) {
