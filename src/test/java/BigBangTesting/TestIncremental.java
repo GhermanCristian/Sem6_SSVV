@@ -4,7 +4,9 @@ import curent.Curent;
 import domain.Nota;
 import domain.Student;
 import domain.Tema;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import repository.NotaXMLRepo;
 import repository.StudentXMLRepo;
 import repository.TemaXMLRepo;
@@ -12,17 +14,13 @@ import service.Service;
 import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
-import validation.ValidationException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestBigBang {
+public class TestIncremental {
     private Service service;
     private static final String STUDENT_REPOSITORY_PATH = "fisiere/studentiTest.xml";
     private static final String TEMA_REPOSITORY_PATH = "fisiere/assignmentTest.xml";
@@ -72,13 +70,6 @@ public class TestBigBang {
     }
 
     @Test
-    public void TestAddAssignment_ValidAssignment_AssignmentAddedCorrectly() {
-        Tema newTema = new Tema("1", "a", 1, 1);
-        this.service.addTema(newTema);
-        assertEquals(this.service.getAllTeme().iterator().next(), newTema);
-    }
-
-    @Test
     public void TestAddStudent_ValidStudent_StudentAddedCorrectly() {
         Student newStudent = new Student("1111", "a b", 999, "aa@yahoo.com");
         this.service.addStudent(newStudent);
@@ -86,13 +77,17 @@ public class TestBigBang {
     }
 
     @Test
-    public void TestAddNota_InvalidGradeStudentDoesNotExist_ThrowsValidationException() {
-        Nota nota = new Nota("1111", "1111", "1", 10, Curent.getStartDate().plusWeeks(3));
-        assertThrows(ValidationException.class, () -> this.service.addNota(nota, "plm"));
+    public void TestAddStudentAndAddAssignment_ValidStudentAndAssignment_BothAddedCorrectly() {
+        Student newStudent = new Student("1111", "a b", 999, "aa@yahoo.com");
+        this.service.addStudent(newStudent);
+        assertEquals(this.service.getAllStudenti().iterator().next(), newStudent);
+        Tema newTema = new Tema("1", "a", 1, 1);
+        this.service.addTema(newTema);
+        assertEquals(this.service.getAllTeme().iterator().next(), newTema);
     }
 
     @Test
-    public void TestAddNota_ValidGradeAndStudentAndAssignment_GradeAddedCorrectly() {
+    public void TestAddStudentAndAddAssignmentAndAddNota_ValidGradeAndStudentAndAssignment_AllAddedCorrectly() {
         Student newStudent = new Student("1111", "a b", 999, "aa@yahoo.com");
         this.service.addStudent(newStudent);
         Tema newTema = new Tema("1", "a", 14, 1);
