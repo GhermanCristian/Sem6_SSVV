@@ -1,10 +1,16 @@
 package validation;
 
 
+import curent.Curent;
 import domain.Nota;
 import domain.Student;
 import domain.Tema;
 import repository.*;
+
+import java.time.LocalDate;
+
+import static curent.Curent.calculeazaSPredare;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class NotaValidator implements Validator<Nota> {
     private StudentXMLRepo studentFileRepository;
@@ -38,6 +44,19 @@ public class NotaValidator implements Validator<Nota> {
         double notaC = nota.getNota();
         if(notaC > 10.00 || notaC < 0.00){
             throw new ValidationException("Valoarea notei nu este corecta!");
+        }
+
+        int predare = calculeazaSPredare(nota.getData());
+        if(predare < 0)
+            throw new ValidationException("Saptamana de predare nu poate fi inainte de saptamana de inceput!");
+        if(predare > 14)
+            throw new ValidationException("Studentul nu poate preda tema dupa finalul semestrului!");
+        if (predare > tema.getDeadline()) {
+            if (predare - tema.getDeadline() == 1) {
+                nota.setNota(nota.getNota() - 2.5);
+            } else {
+                throw new ValidationException("Studentul nu mai poate preda aceasta tema!");
+            }
         }
     }
 }

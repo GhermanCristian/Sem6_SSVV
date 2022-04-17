@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static curent.Curent.calculeazaSPredare;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
@@ -164,14 +165,6 @@ public class Service {
         Student student = studentFileRepository.findOne(nota.getIdStudent());
         Tema tema = temaFileRepository.findOne(nota.getIdTema());
         int predare = calculeazaSPredare(nota.getData());
-        if(predare > tema.getDeadline()){
-            if (predare - tema.getDeadline() == 1){
-                nota.setNota(nota.getNota() - 2.5);
-            }
-            else{
-                throw new ValidationException("Studentul nu mai poate preda aceasta tema!");
-            }
-        }
         notaFileRepository.save(nota);
         String filename = "fisiere/" + student.getNume() + ".txt";
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))){
@@ -236,17 +229,5 @@ public class Service {
         else{
             throw new ValidationException("Nu se mai poate prelungi deadline-ul!");
         }
-    }
-
-    /**
-     * Calculeaza saptamana de predare
-     * @param predare - data predarii unei teme
-     * @return saptamana in care a fost predata tema
-     */
-    private int calculeazaSPredare(LocalDate predare) {
-        LocalDate startDate = Curent.getStartDate();
-        long days = DAYS.between(startDate, predare);
-        double saptamanaPredare = Math.ceil((double)days/7);
-        return (int)saptamanaPredare;
     }
 }

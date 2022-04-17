@@ -34,4 +34,17 @@ public class Curent {
             throw new ValidationException(exception.getMessage());
         }
     }
+
+    /**
+     * Calculeaza saptamana de predare
+     * @param predare - data predarii unei teme
+     * @return saptamana in care a fost predata tema
+     */
+    public static int calculeazaSPredare(LocalDate predare) throws ValidationException {
+        LocalDate startDate = Curent.getStartDate();
+        long days = DAYS.between(startDate, predare);
+        double saptamanaPredare = Math.ceil((double)days/7);
+        return (int)saptamanaPredare;
+    }
+
 }
