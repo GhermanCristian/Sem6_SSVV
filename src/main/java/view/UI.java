@@ -5,6 +5,8 @@ import domain.Student;
 import domain.Tema;
 import service.Service;
 import validation.ValidationException;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -339,18 +341,23 @@ public class UI {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Introduceti comanda: ");
             int comanda = scanner.nextInt();
-            if (comanda == 0) {
-                break;
-            } else if (comanda == 1) {
-                adaugaNota();
-            } else if (comanda == 2) {
-                stergeNota();
-            } else if (comanda == 3) {
-                cautareNota();
-            } else if (comanda == 4) {
-                afisareNote();
-            } else {
-                System.out.println("Comanda invalida!");
+            try {
+                if (comanda == 0) {
+                    break;
+                } else if (comanda == 1) {
+                    adaugaNota();
+                } else if (comanda == 2) {
+                    stergeNota();
+                } else if (comanda == 3) {
+                    cautareNota();
+                } else if (comanda == 4) {
+                    afisareNote();
+                } else {
+                    System.out.println("Comanda invalida!");
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -359,7 +366,7 @@ public class UI {
      * Adauga o nota
      * @throws ValidationException daca nota exista deja
      */
-    private void adaugaNota() throws ValidationException {
+    private void adaugaNota() throws ValidationException, IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Introduceti id student: ");
         String idStudent = scanner.next();

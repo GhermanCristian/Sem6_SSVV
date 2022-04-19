@@ -18,6 +18,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestIncremental {
@@ -93,7 +94,7 @@ public class TestIncremental {
         Tema newTema = new Tema("1", "a", 14, 1);
         this.service.addTema(newTema);
         Nota nota = new Nota("1111", "1111", "1", 10, Curent.getStartDate().plusWeeks(3));
-        this.service.addNota(nota, "bun");
+        assertDoesNotThrow(() -> this.service.addNota(nota, "bun"));
         assertEquals(this.service.getAllNote().iterator().next(), nota);
     }
 }

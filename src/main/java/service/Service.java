@@ -4,34 +4,26 @@ import curent.Curent;
 import domain.Nota;
 import domain.Student;
 import domain.Tema;
-
 import repository.*;
 import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
 import validation.ValidationException;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-
 import static curent.Curent.calculeazaSPredare;
-import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Clasa Service
  */
 public class Service {
-    //private StudentFileRepository studentFileRepository;
-    private StudentXMLRepo studentFileRepository;
-    private StudentValidator studentValidator;
-    //private TemaFileRepository temaFileRepository;
-    private TemaXMLRepo temaFileRepository;
-    private TemaValidator temaValidator;
-    //private NotaFileRepository notaFileRepository;
-    private NotaXMLRepo notaFileRepository;
-    private NotaValidator notaValidator;
+    private final StudentXMLRepo studentFileRepository;
+    private final StudentValidator studentValidator;
+    private final TemaXMLRepo temaFileRepository;
+    private final TemaValidator temaValidator;
+    private final NotaXMLRepo notaFileRepository;
+    private final NotaValidator notaValidator;
 
     /**
      * Class Constructor
@@ -42,9 +34,7 @@ public class Service {
      * @param notaFileRepository - repository nota
      * @param notaValidator - validator nota
      */
-    //public Service(StudentFileRepository studentFileRepository, StudentValidator studentValidator, TemaFileRepository temaFileRepository, TemaValidator temaValidator, NotaFileRepository notaFileRepository, NotaValidator notaValidator) {
     public Service(StudentXMLRepo studentFileRepository, StudentValidator studentValidator, TemaXMLRepo temaFileRepository, TemaValidator temaValidator, NotaXMLRepo notaFileRepository, NotaValidator notaValidator) {
-
         this.studentFileRepository = studentFileRepository;
         this.studentValidator = studentValidator;
         this.temaFileRepository = temaFileRepository;
@@ -134,7 +124,8 @@ public class Service {
     public Tema findTema(String id){
         if(id == null || id.equals("")){
             throw new ValidationException("Id-ul nu poate fi null!");
-        }return temaFileRepository.findOne(id);
+        }
+        return temaFileRepository.findOne(id);
     }
 
     /**
@@ -160,7 +151,7 @@ public class Service {
      * @param feedback - feedback-ul notei
      * @return null daca nota a fost adaugata sau nota daca aceasta exista deja
      */
-    public double addNota(Nota nota, String feedback){
+    public double addNota(Nota nota, String feedback) throws ValidationException, IOException {
         notaValidator.validate(nota);
         Student student = studentFileRepository.findOne(nota.getIdStudent());
         Tema tema = temaFileRepository.findOne(nota.getIdTema());
@@ -175,7 +166,7 @@ public class Service {
             bufferedWriter.write("\nFeedback: " +feedback);
             bufferedWriter.newLine();
         } catch (IOException exception){
-            throw new ValidationException(exception.getMessage());
+            throw new IOException(exception.getMessage());
         }
         return nota.getNota();
     }

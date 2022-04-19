@@ -13,14 +13,11 @@ import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
 import validation.ValidationException;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBigBang {
     private Service service;
@@ -98,7 +95,7 @@ public class TestBigBang {
         Tema newTema = new Tema("1", "a", 14, 1);
         this.service.addTema(newTema);
         Nota nota = new Nota("1111", "1111", "1", 10, Curent.getStartDate().plusWeeks(3));
-        this.service.addNota(nota, "bun");
+        assertDoesNotThrow(() -> this.service.addNota(nota, "bun"));
         assertEquals(this.service.getAllNote().iterator().next(), nota);
     }
 }

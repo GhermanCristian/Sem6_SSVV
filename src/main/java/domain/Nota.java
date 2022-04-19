@@ -1,7 +1,6 @@
 package domain;
 
 import repository.HasID;
-
 import java.time.LocalDate;
 
 public class Nota implements HasID<String> {

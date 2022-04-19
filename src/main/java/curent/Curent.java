@@ -1,7 +1,6 @@
 package curent;
 
 import validation.ValidationException;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,12 +12,12 @@ public class Curent {
     /**
      * @return the current week from the starting of university
      */
-    public static int getCurrentWeek(){
+    public static int getCurrentWeek() {
         LocalDate startDate = Curent.getStartDate();
         LocalDate today = LocalDate.now();
         long days = DAYS.between(startDate, today);
-        double diff = Math.ceil((double)days/7);
-        return (int)diff;
+        double diff = Math.ceil((double) days / 7);
+        return (int) diff;
     }
 
     /**
@@ -37,14 +36,15 @@ public class Curent {
 
     /**
      * Calculeaza saptamana de predare
+     *
      * @param predare - data predarii unei teme
      * @return saptamana in care a fost predata tema
      */
     public static int calculeazaSPredare(LocalDate predare) throws ValidationException {
         LocalDate startDate = Curent.getStartDate();
         long days = DAYS.between(startDate, predare);
-        double saptamanaPredare = Math.ceil((double)days/7);
-        return (int)saptamanaPredare;
+        double saptamanaPredare = Math.ceil((double) days / 7);
+        return (int) saptamanaPredare;
     }
 
 }
